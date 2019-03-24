@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Unity.AutoRegistration
 {
@@ -17,7 +18,7 @@ namespace Unity.AutoRegistration
         /// <returns>Auto registration</returns>
         IAutoRegistration Include(
             Predicate<Type> typeFilter,
-            Action<Type, IUnityContainer> registrator);
+            Action<Type, IServiceCollection> registrator);
 
         /// <summary>
         /// Adds rule to include certain types that satisfy specified type filter 
@@ -29,7 +30,7 @@ namespace Unity.AutoRegistration
         IAutoRegistration Include(
             Predicate<Type> typeFilter,
             IRegistrationOptions registrationOptions);
-        
+
         /// <summary>
         /// Adds rule to exclude certain types that satisfy specified type filter and not register them
         /// </summary>

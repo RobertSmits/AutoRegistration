@@ -21,11 +21,7 @@ namespace Unity.AutoRegistration
             if (type == null)
                 throw new ArgumentNullException("type");
 
-#if NETSTANDARD1_6
-            return type.GetTypeInfo().GetCustomAttribute<TAttr>(false) != null;
-#else
             return type.GetTypeInfo().GetCustomAttributes(false).Any(a => a.GetType() == typeof(TAttr));
-#endif
         }
 
         /// <summary>
@@ -41,7 +37,7 @@ namespace Unity.AutoRegistration
 
             return type.GetTypeInfo().ImplementedInterfaces.Any(i => i == typeof(TContract));
         }
-        
+
         /// <summary>
         /// Determines whether type implements interface that can be constructed from specified open-generic interface
         /// </summary>
@@ -61,7 +57,7 @@ namespace Unity.AutoRegistration
                 throw new ArgumentException("Provided contract has to be an interface", "contract");
             if (!contractTypeInfo.IsGenericTypeDefinition)
                 throw new ArgumentException("Provided contract has to be an open generic", "contract");
-            
+
             return type.GetTypeInfo().ImplementedInterfaces.Any(i => i.GetTypeInfo().IsGenericType && (i.GetGenericTypeDefinition() == contract));
         }
 
@@ -76,8 +72,8 @@ namespace Unity.AutoRegistration
         {
             if (type == null)
                 throw new ArgumentNullException("type");
-            
-            return type.GetTypeInfo().ImplementedInterfaces.Any(i => i.Name.StartsWith("I") 
+
+            return type.GetTypeInfo().ImplementedInterfaces.Any(i => i.Name.StartsWith("I")
                 && i.Name.Remove(0, 1) == type.Name);
         }
 
@@ -164,7 +160,7 @@ namespace Unity.AutoRegistration
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
 
-            return typeof (T).GetTypeInfo().Assembly == assembly;
+            return typeof(T).GetTypeInfo().Assembly == assembly;
         }
     }
 }

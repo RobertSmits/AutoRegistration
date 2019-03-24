@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Lifetime;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Unity.AutoRegistration
 {
@@ -13,38 +13,21 @@ namespace Unity.AutoRegistration
         private Type _type;
 
         private Func<Type, IEnumerable<Type>> _interfacesToRegisterAsResolver = t => new List<Type>(t.GetImplementedInterfacesFixed());
-        private Func<Type, string> _nameToRegisterWithResolver = t => String.Empty;
-        private Func<Type, LifetimeManager> _lifetimeManagerToRegisterWithResolver = t => new TransientLifetimeManager();
+        private Func<Type, ServiceLifetime> _serviceLifetimeToRegisterWithResolver = t => ServiceLifetime.Transient;
 
         /// <summary>
-        /// Gets or sets lifetime manager to use to register type(s).
+        /// Gets or sets service lifetime to use to register type(s).
         /// </summary>
-        /// <value>Lifetime manager.</value>
-        public LifetimeManager LifetimeManager
+        /// <value>Service lifetime.</value>
+        public ServiceLifetime ServiceLifetime
         {
             get
             {
-                return _lifetimeManagerToRegisterWithResolver(_type);
+                return _serviceLifetimeToRegisterWithResolver(_type);
             }
             set
             {
-                _lifetimeManagerToRegisterWithResolver = t => value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets name to register type(s) with.
-        /// </summary>
-        /// <value>Name.</value>
-        public string Name
-        {
-            get
-            {
-                return _nameToRegisterWithResolver(_type);
-            }
-            set
-            {
-                _nameToRegisterWithResolver = t => value;
+                _serviceLifetimeToRegisterWithResolver = t => value;
             }
         }
 
@@ -79,129 +62,57 @@ namespace Unity.AutoRegistration
         }
 
         /// <summary>
-        /// Specifies lifetime manager to use when registering type
+        /// Specifies service lifetime to use when registering type
         /// </summary>
-        /// <typeparam name="TLifetimeManager">The type of the lifetime manager.</typeparam>
+        /// <param name="serviceLifetime">The type of the service lifetime.</param>
         /// <returns>Fluent registration</returns>
-        public IFluentRegistration UsingLifetime<TLifetimeManager>() where TLifetimeManager : LifetimeManager, new()
+        public IFluentRegistration UsingLifetime(ServiceLifetime serviceLifetime)
         {
-            _lifetimeManagerToRegisterWithResolver = t => new TLifetimeManager();
+            _serviceLifetimeToRegisterWithResolver = t => serviceLifetime;
             return this;
         }
 
         /// <summary>
-        /// Specifies lifetime manager resolver function, that by given type return lifetime manager to use when registering type
+        /// Specifies service lifetime resolver function, that by given type return service lifetime to use when registering type
         /// </summary>
-        /// <param name="lifetimeResolver">Lifetime manager resolver.</param>
+        /// <param name="lifetimeResolver">Service lifetime resolver.</param>
         /// <returns>Fluent registration</returns>
-        public IFluentRegistration UsingLifetime(Func<Type, LifetimeManager> lifetimeResolver)
+        public IFluentRegistration UsingLifetime(Func<Type, ServiceLifetime> lifetimeResolver)
         {
             if (lifetimeResolver == null)
                 throw new ArgumentNullException("lifetimeResolver");
 
-            _lifetimeManagerToRegisterWithResolver = lifetimeResolver;
+            _serviceLifetimeToRegisterWithResolver = lifetimeResolver;
             return this;
         }
 
         /// <summary>
-        /// Specifies lifetime manager to use when registering type
-        /// </summary>
-        /// <typeparam name="TLifetimeManager">The type of the lifetime manager.</typeparam>
-        /// <param name="manager"></param>
-        /// <returns>Fluent registration</returns>
-        public IFluentRegistration UsingLifetime<TLifetimeManager>(TLifetimeManager manager) where TLifetimeManager : LifetimeManager
-        {
-            if (manager == null)
-                throw new ArgumentNullException("manager");
-
-            _lifetimeManagerToRegisterWithResolver = t => manager;
-            return this;
-        }
-
-        /// <summary>
-        /// Specifies ContainerControlledLifetimeManager lifetime manager to use when registering type
+        /// Specifies Singleton service lifetime to use when registering type
         /// </summary>
         /// <returns>Fluent registration</returns>
         public IFluentRegistration UsingSingletonMode()
         {
-            _lifetimeManagerToRegisterWithResolver = t => new ContainerControlledLifetimeManager();
+            _serviceLifetimeToRegisterWithResolver = t => ServiceLifetime.Singleton;
             return this;
         }
 
         /// <summary>
-        /// Specifies TransientLifetimeManager lifetime manager to use when registering type
+        /// Specifies Scoped service lifetime to use when registering type
         /// </summary>
         /// <returns>Fluent registration</returns>
-        public IFluentRegistration UsingPerCallMode()
+        public IFluentRegistration UsingScopedMode()
         {
-            _lifetimeManagerToRegisterWithResolver = t => new TransientLifetimeManager();
+            _serviceLifetimeToRegisterWithResolver = t => ServiceLifetime.Scoped;
             return this;
         }
 
         /// <summary>
-        /// Specifies PerThreadLifetimeManager lifetime manager to use when registering type
+        /// Specifies Transient service lifetime to use when registering type
         /// </summary>
         /// <returns>Fluent registration</returns>
-        public IFluentRegistration UsingPerThreadMode()
+        public IFluentRegistration UsingTransientMode()
         {
-            _lifetimeManagerToRegisterWithResolver = t => new PerThreadLifetimeManager();
-            return this;
-        }
-
-        /// <summary>
-        /// Specifies name to register type with
-        /// </summary>
-        /// <param name="name">Name.</param>
-        /// <returns>Fluent registration</returns>
-        public IFluentRegistration WithName(string name)
-        {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            Name = name;
-            return this;
-        }
-
-        /// <summary>
-        /// Specifies name resolver function that by given type returns name to register it with
-        /// </summary>
-        /// <param name="nameResolver">Name resolver.</param>
-        /// <returns>Fluent registration</returns>
-        public IFluentRegistration WithName(Func<Type, string> nameResolver)
-        {
-            if (nameResolver == null)
-                throw new ArgumentNullException("nameResolver");
-
-            _nameToRegisterWithResolver = nameResolver;
-            return this;
-        }
-
-        /// <summary>
-        /// Specifies that type name should be used to register it with
-        /// </summary>
-        /// <returns>Fluent registration</returns>
-        public IFluentRegistration WithTypeName()
-        {
-            _nameToRegisterWithResolver = t => t.Name;
-            return this;
-        }
-
-        /// <summary>
-        /// Specifies that type should be registered with its name minus well-known application part name.
-        /// For example: WithPartName("Controller") will register 'HomeController' type with name 'Home',
-        /// or WithPartName(WellKnownAppParts.Repository) will register 'CustomerRepository' type with name 'Customer'
-        /// </summary>
-        /// <param name="name">Application part name.</param>
-        /// <returns>Fluent registration</returns>
-        public IFluentRegistration WithPartName(string name)
-        {
-            _nameToRegisterWithResolver = t =>
-                                              {
-                                                  var typeName = t.Name;
-                                                  if (typeName.EndsWith(name))
-                                                      return typeName.Remove(typeName.Length - name.Length);
-                                                  return typeName;
-                                              };
+            _serviceLifetimeToRegisterWithResolver = t => ServiceLifetime.Transient;
             return this;
         }
 
@@ -226,7 +137,7 @@ namespace Unity.AutoRegistration
             if (typeResolver == null)
                 throw new ArgumentNullException("typeResolver");
 
-            _interfacesToRegisterAsResolver = t => new List<Type> {typeResolver(t)};
+            _interfacesToRegisterAsResolver = t => new List<Type> { typeResolver(t) };
             return this;
         }
 
@@ -240,7 +151,7 @@ namespace Unity.AutoRegistration
             if (typesResolver == null)
                 throw new ArgumentNullException("typesResolver");
 
-            _interfacesToRegisterAsResolver = t => new List<Type> ( typesResolver(t) );
+            _interfacesToRegisterAsResolver = t => new List<Type>(typesResolver(t));
             return this;
         }
 

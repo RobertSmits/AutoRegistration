@@ -16,11 +16,7 @@ namespace Unity.AutoRegistration
         /// <returns>Auto registration</returns>
         public static IAutoRegistration LoadAssemblyFrom(this IAutoRegistration autoRegistration, string assemblyPath)
         {
-#if NETSTANDARD1_6
-            System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
-#else
             Assembly.LoadFrom(assemblyPath);
-#endif
             return autoRegistration;
         }
 
@@ -89,12 +85,7 @@ namespace Unity.AutoRegistration
             {
                 try
                 {
-#if NETSTANDARD1_6
-                    System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(x);
-#else
                     AssemblyName.GetAssemblyName(x);
-#endif
-
                     return true;
                 }
                 catch

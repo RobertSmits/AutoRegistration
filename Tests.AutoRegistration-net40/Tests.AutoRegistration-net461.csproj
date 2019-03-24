@@ -1,17 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>net45</TargetFrameworks>
+	<TargetFrameworks>net461</TargetFrameworks>
 	
 	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NET45;NET40TESTS</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NET461</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NET45;NET40TESTS</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NET461</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup>
@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tests.Contracts\Tests.Contracts.csproj" />
-    <ProjectReference Include="..\Unity.AutoRegistration\Unity.AutoRegistration.csproj" Properties="TargetFramework=net40" />
+    <ProjectReference Include="..\Unity.AutoRegistration\Unity.AutoRegistration.csproj" Properties="TargetFramework=net461" />
   </ItemGroup>
 
 </Project>

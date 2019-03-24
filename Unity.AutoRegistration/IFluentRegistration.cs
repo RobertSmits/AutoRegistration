@@ -1,5 +1,5 @@
 using System;
-using Unity.Lifetime;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Unity.AutoRegistration
 {
@@ -9,80 +9,40 @@ namespace Unity.AutoRegistration
     /// </summary>
     public interface IFluentRegistration : IRegistrationOptions
     {
-        /// <summary>
-        /// Specifies lifetime manager to use when registering type
-        /// </summary>
-        /// <typeparam name="TLifetimeManager">The type of the lifetime manager.</typeparam>
-        /// <returns>Fluent registration</returns>
-        IFluentRegistration UsingLifetime<TLifetimeManager>() where TLifetimeManager : LifetimeManager, new();
 
         /// <summary>
-        /// Specifies lifetime manager resolver function, that by given type return lifetime manager to use when registering type
+        /// Specifies service lifetime resolver function, that by given type return service lifetime to use when registering type
         /// </summary>
-        /// <param name="lifetimeResolver">Lifetime manager resolver.</param>
+        /// <param name="lifetimeResolver">Service lifetime resolver.</param>
         /// <returns>Fluent registration</returns>
-        IFluentRegistration UsingLifetime(Func<Type, LifetimeManager> lifetimeResolver);
+        IFluentRegistration UsingLifetime(Func<Type, ServiceLifetime> serviceLifetime);
 
         /// <summary>
-        /// Specifies lifetime manager to use when registering type
+        /// Specifies service lifetime to use when registering type
         /// </summary>
-        /// <typeparam name="TLifetimeManager">The type of the lifetime manager.</typeparam>
+        /// <typeparam name="serviceLifetime">The type of the service lifetime.</typeparam>
         /// <returns>Fluent registration</returns>
-        IFluentRegistration UsingLifetime<TLifetimeManager>(TLifetimeManager manager) where TLifetimeManager : LifetimeManager;
+        IFluentRegistration UsingLifetime(ServiceLifetime serviceLifetime);
 
         /// <summary>
-        /// Specifies ContainerControlledLifetimeManager lifetime manager to use when registering type
+        /// Specifies Singleton service lifetime to use when registering type
         /// </summary>
         /// <returns>Fluent registration</returns>
         IFluentRegistration UsingSingletonMode();
 
 
         /// <summary>
-        /// Specifies TransientLifetimeManager lifetime manager to use when registering type
+        /// Specifies Scoped service lifetime to use when registering type
         /// </summary>
         /// <returns>Fluent registration</returns>
-        IFluentRegistration UsingPerCallMode();
+        IFluentRegistration UsingScopedMode();
 
         /// <summary>
-        /// Specifies PerThreadLifetimeManager lifetime manager to use when registering type
+        /// Specifies Transient service lifetime to use when registering type
         /// </summary>
         /// <returns>Fluent registration</returns>
-        IFluentRegistration UsingPerThreadMode();
+        IFluentRegistration UsingTransientMode();
 
-        /// <summary>
-        /// Specifies name to register type with
-        /// </summary>
-        /// <param name="name">Name.</param>
-        /// <returns>Fluent registration</returns>
-        IFluentRegistration WithName(string name);
-
-        /// <summary>
-        /// Specifies name resolver function that by given type returns name to register it with
-        /// </summary>
-        /// <param name="nameResolver">Name resolver.</param>
-        /// <returns>Fluent registration</returns>
-        IFluentRegistration WithName(Func<Type, string> nameResolver);
-
-        /// <summary>
-        /// Specifies that type name should be used to register it with
-        /// </summary>
-        /// <returns>Fluent registration</returns>
-        IFluentRegistration WithTypeName();
-
-        /// <summary>
-        /// Specifies that type should be registered with its name minus well-known application part name.
-        /// For example: WithPartName("Controller") will register 'HomeController' type with name 'Home',
-        /// or WithPartName(WellKnownAppParts.Repository) will register 'CustomerRepository' type with name 'Customer'
-        /// </summary>
-        /// <param name="name">Application part name.</param>
-        /// <returns>Fluent registration</returns>
-        IFluentRegistration WithPartName(string name);
-
-        /// <summary>
-        /// Specifies interface to register type as
-        /// </summary>
-        /// <typeparam name="TContact">The type of the interface.</typeparam>
-        /// <returns>Fluent registration</returns>
         IFluentRegistration As<TContact>() where TContact : class;
 
         /// <summary>

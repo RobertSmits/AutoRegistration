@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-#if NETSTANDARD1_6
-using Unity.AutoRegistration.Polyfills;
-#endif
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Unity.AutoRegistration
 {
@@ -16,21 +13,21 @@ namespace Unity.AutoRegistration
     public class AutoRegistration : IAutoRegistration
     {
         private readonly List<RegistrationEntry> _registrationEntries = new List<RegistrationEntry>();
-        
+
         private readonly List<Predicate<Assembly>> _excludedAssemblyFilters = new List<Predicate<Assembly>>();
         private readonly List<Predicate<Type>> _excludedTypeFilters = new List<Predicate<Type>>();
 
-        private readonly IUnityContainer _container;
+        private readonly IServiceCollection _services;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoRegistration"/> class.
         /// </summary>
-        /// <param name="container">Unity container.</param>
-        public AutoRegistration (IUnityContainer container)
+        /// <param name="services">Service container.</param>
+        public AutoRegistration(IServiceCollection services)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-            _container = container;
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+            _services = services;
         }
 
         /// <summary>
@@ -42,14 +39,14 @@ namespace Unity.AutoRegistration
         /// <returns>Auto registration</returns>
         public virtual IAutoRegistration Include(
             Predicate<Type> typeFilter,
-            Action<Type, IUnityContainer> registrator)
+            Action<Type, IServiceCollection> registrator)
         {
             if (typeFilter == null)
                 throw new ArgumentNullException("typeFilter");
             if (registrator == null)
                 throw new ArgumentNullException("registrator");
 
-            _registrationEntries.Add(new RegistrationEntry(typeFilter, registrator, _container));
+            _registrationEntries.Add(new RegistrationEntry(typeFilter, registrator, _services));
             return this;
         }
 
@@ -76,14 +73,13 @@ namespace Unity.AutoRegistration
                                                  registrationOptions.Type = t;
                                                  foreach (var contract in registrationOptions.Interfaces)
                                                  {
-                                                     c.RegisterType(
+                                                     c.Add(new ServiceDescriptor(
                                                          contract,
                                                          t,
-                                                         registrationOptions.Name,
-                                                         registrationOptions.LifetimeManager);
+                                                         registrationOptions.ServiceLifetime));
                                                  }
                                              },
-                                         _container));
+                                         _services));
             return this;
         }
 
@@ -127,7 +123,8 @@ namespace Unity.AutoRegistration
                     .GetAssemblies()
                     .Where(a => !_excludedAssemblyFilters.Any(f => f(a)))
                     .SelectMany(a => a.GetTypes())
-                    .Where(t => !_excludedTypeFilters.Any(f => f(t))))
+                    .Where(t => !_excludedTypeFilters.Any(f => f(t)))
+                    .Where(t => !t.IsAbstract))
                     foreach (var entry in _registrationEntries)
                         entry.RegisterIfSatisfiesFilter(type);
         }
@@ -135,21 +132,21 @@ namespace Unity.AutoRegistration
         private class RegistrationEntry
         {
             private readonly Predicate<Type> _typeFilter;
-            private readonly Action<Type, IUnityContainer> _registrator;
-            private readonly IUnityContainer _container;
+            private readonly Action<Type, IServiceCollection> _registrator;
+            private readonly IServiceCollection _services;
 
             public RegistrationEntry(Predicate<Type> typeFilter,
-                                     Action<Type, IUnityContainer> registrator, IUnityContainer container)
+                                     Action<Type, IServiceCollection> registrator, IServiceCollection services)
             {
                 _typeFilter = typeFilter;
                 _registrator = registrator;
-                _container = container;
+                _services = services;
             }
 
             public void RegisterIfSatisfiesFilter(Type type)
             {
                 if (_typeFilter(type))
-                    _registrator(type, _container);
+                    _registrator(type, _services);
             }
         }
     }

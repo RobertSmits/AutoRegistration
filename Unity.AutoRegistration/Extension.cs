@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Unity.AutoRegistration
 {
@@ -15,22 +16,22 @@ namespace Unity.AutoRegistration
         /// <typeparam name="TAttr">Type of the attribute.</typeparam>
         /// <param name="type">Target type.</param>
         /// <returns>Attribute value</returns>
-        public static TAttr GetAttribute<TAttr>(this Type type) 
+        public static TAttr GetAttribute<TAttr>(this Type type)
             where TAttr : Attribute
         {
-            return type.GetTypeInfo().GetCustomAttributes(false).Single(a => typeof (TAttr) == a.GetType()) as TAttr;
+            return type.GetTypeInfo().GetCustomAttributes(false).Single(a => typeof(TAttr) == a.GetType()) as TAttr;
         }
-        
+
         /// <summary>
         /// Configures auto registration - starts chain of fluent configuration
         /// </summary>
-        /// <param name="container">Unity container.</param>
+        /// <param name="services">Service container.</param>
         /// <returns>Auto registration</returns>
-        public static IAutoRegistration ConfigureAutoRegistration(this IUnityContainer container)
+        public static IAutoRegistration ConfigureAutoRegistration(this IServiceCollection services)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-            return new AutoRegistration(container);
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+            return new AutoRegistration(services);
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace Unity.AutoRegistration
         /// <returns>Auto registration</returns>
         public static IAutoRegistration ExcludeSystemAssemblies(this IAutoRegistration autoRegistration)
         {
-            autoRegistration.ExcludeAssemblies(a => a.GetName().FullName.StartsWith("System.") 
+            autoRegistration.ExcludeAssemblies(a => a.GetName().FullName.StartsWith("System.")
                 || a.GetName().FullName.StartsWith("mscorlib")
                 || a.GetName().Name.Equals("System"));
             return autoRegistration;

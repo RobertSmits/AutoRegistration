@@ -1,4 +1,4 @@
-namespace Unity.AutoRegistration
+namespace Microsoft.Extensions.DependencyInjection.AutoRegistration
 {
     /// <summary>
     /// Extension methods for fluent registration options

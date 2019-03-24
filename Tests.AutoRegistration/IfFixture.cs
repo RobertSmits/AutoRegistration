@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unity.AutoRegistration;
+using Microsoft.Extensions.DependencyInjection.AutoRegistration;
 
 namespace Tests.AutoRegistration
 {

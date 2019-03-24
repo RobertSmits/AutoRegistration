@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Unity.AutoRegistration
+namespace Microsoft.Extensions.DependencyInjection.AutoRegistration
 {
     /// <summary>
     /// Fluent registration options contract describes number of operations 

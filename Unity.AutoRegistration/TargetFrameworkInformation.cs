@@ -1,13 +1,13 @@
 ﻿using System;
 
-[assembly: Unity.AutoRegistration.TargetFrameworkInformation(
+[assembly: Microsoft.Extensions.DependencyInjection.AutoRegistration.TargetFrameworkInformation(
 #if NETSTANDARD2_0
-    Unity.AutoRegistration.TargetFramework.netstandard2_0
+    Microsoft.Extensions.DependencyInjection.AutoRegistration.TargetFramework.netstandard2_0
 #elif NET461
-    Unity.AutoRegistration.TargetFramework.net461
+    Microsoft.Extensions.DependencyInjection.AutoRegistration.TargetFramework.net461
 #endif
     )]
-namespace Unity.AutoRegistration
+namespace Microsoft.Extensions.DependencyInjection.AutoRegistration
 {
 
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

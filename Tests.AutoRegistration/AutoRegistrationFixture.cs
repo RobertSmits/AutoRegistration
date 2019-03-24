@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Tests.Contracts;
-using Unity.AutoRegistration;
+using Microsoft.Extensions.DependencyInjection.AutoRegistration;
 
 namespace Tests.AutoRegistration
 {
@@ -242,7 +242,7 @@ namespace Tests.AutoRegistration
         public void TestPlatformUsesCorrectTargetPlatformAssembly()
         {
             System.Reflection.Assembly unityAutoRegistrationAssembly;
-            unityAutoRegistrationAssembly = typeof(Unity.AutoRegistration.AutoRegistration).GetTypeInfo().Assembly;
+            unityAutoRegistrationAssembly = typeof(Microsoft.Extensions.DependencyInjection.AutoRegistration.AutoRegistration).GetTypeInfo().Assembly;
 
             var targetFrameworkInformationAttribute = unityAutoRegistrationAssembly.GetCustomAttribute<TargetFrameworkInformationAttribute>();
             var runtimeTarget = unityAutoRegistrationAssembly.GetCustomAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>();

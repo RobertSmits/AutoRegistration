@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Unity.AutoRegistration
+namespace Microsoft.Extensions.DependencyInjection.AutoRegistration
 {
     /// <summary>
     /// Extension methods to various types
@@ -20,6 +19,23 @@ namespace Unity.AutoRegistration
             where TAttr : Attribute
         {
             return type.GetTypeInfo().GetCustomAttributes(false).Single(a => typeof(TAttr) == a.GetType()) as TAttr;
+        }
+
+        /// <summary>
+        /// Configures auto registration - starts chain of fluent configuration
+        /// </summary>
+        /// <param name="services">Service container.</param>
+        /// <returns>Auto registration</returns>
+        public static IServiceCollection AddAutoRegistration(this IServiceCollection services, Func<IAutoRegistration, IAutoRegistration> autoRegisterFunc)
+        {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+            //return new AutoRegistration(services);
+            var autoRegistration = new AutoRegistration(services);
+            autoRegisterFunc(autoRegistration)
+                .ApplyAutoRegistration();
+
+            return services;
         }
 
         /// <summary>

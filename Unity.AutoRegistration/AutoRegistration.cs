@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Unity.AutoRegistration
+namespace Microsoft.Extensions.DependencyInjection.AutoRegistration
 {
     /// <summary>
     /// Auto Registration extends popular Unity IoC container 

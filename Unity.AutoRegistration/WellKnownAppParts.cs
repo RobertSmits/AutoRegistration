@@ -1,4 +1,4 @@
-﻿namespace Unity.AutoRegistration
+﻿namespace Microsoft.Extensions.DependencyInjection.AutoRegistration
 {
     /// <summary>
     /// Well known application part names: 

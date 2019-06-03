@@ -7,30 +7,30 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <Title>UnityAutoRegistration</Title>
+    <Title>Microsoft.Extensions.DependencyInjection.AutoRegistration</Title>
     <AssemblyName>Microsoft.Extensions.DependencyInjection.AutoRegistration</AssemblyName>
     <RootNamespace>Microsoft.Extensions.DependencyInjection.AutoRegistration</RootNamespace>
-    <Description>Unity Auto Registration extends the Unity IoC container and provides a fluent syntax to configure rules for automatic type registration. Using few lines of code you can scan specified assemblies and register all types that satisfy your rules.
+    <Description>DependencyInjection Auto Registration extends the :icrosoft Extensions IServiceCollection and provides a fluent syntax to configure rules for automatic type registration. Using few lines of code you can scan specified assemblies and register all types that satisfy your rules.
 
 Rules for determining whether to include/exclude types/assemblies are predicates (Predicate&lt;T&gt;) so you can use lambda syntax or direct method name to specify them. There are a few methods in an If helper class (like Implements, DecoratedWith) to cover some common scenarios of type registration.</Description>
     <Copyright>Artem Govorov &amp; Alexander Stärk</Copyright>
-    <PackageId>UnityAutoRegistration</PackageId>
-    <Product>Unity Auto Registration</Product>
+    <PackageId>DependencyInjection.AutoRegistration</PackageId>
+    <Product>Microsoft DependencyInjection AutoRegistration</Product>
     <Authors>agovorov,astaerk</Authors>
     <Company>agovorov,astaerk</Company>
     <NeutralLanguage>en-AU</NeutralLanguage>
-    <VersionPrefix>2.1.0</VersionPrefix>
-    <VersionSuffix Condition=" $(TF_BUILD)!='true' ">alpha</VersionSuffix>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <InformationalVersion>2.1.0.0</InformationalVersion>
-    <PackageLicenseUrl>https://github.com/astaerk/AutoRegistration/blob/master/LICENSE.md</PackageLicenseUrl>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+    <InformationalVersion>3.0.0.0</InformationalVersion>
+    <PackageLicenseUrl>https://github.com/robertsmits/AutoRegistration/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/astaerk/AutoRegistration</PackageProjectUrl>
-    <PackageTags>.NET Auto-registration Autoregistration dependency-container dependency-injection Enterprise-Library Fluent-Interface Inversion-of-Control IoC DI lambda Unity</PackageTags>
-    <PackageReleaseNotes>- update to Unity 5.1.2 as minimum requirement (includes fixes for .Net Standard)
+    <PackageProjectUrl>https://github.com/robertsmits/AutoRegistration</PackageProjectUrl>
+    <PackageTags>.NET Auto-registration Autoregistration dependency-container dependency-injection Enterprise-Library Fluent-Interface Inversion-of-Control IoC DI lambda</PackageTags>
+    <PackageReleaseNotes>- Migrate to IServiceCollection in Microsoft.Extensions.DependencyInjection
 - support for .NET Standard 1.6 and higher
-- support for .NET Framework 4.0 and higher</PackageReleaseNotes>
+- support for .NET Framework 4.6.1 and higher</PackageReleaseNotes>
+    <Version>3.0.0</Version>
     <!--<PackageIconUrl>http://www.url.de/nuget_icon.png</PackageIconUrl>-->
   </PropertyGroup>
 

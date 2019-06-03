@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutoRegistration", "AutoReg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1566A6DE-43CA-4953-896E-D9B55F989378}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.AutoRegistration", "Unity.AutoRegistration\Unity.AutoRegistration.csproj", "{4BD7688D-BDB6-47EE-9F0B-D61B57C10663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.DependencyInjection.AutoRegistration", "Microsoft.Extensions.DependencyInjection.AutoRegistration\Microsoft.Extensions.DependencyInjection.AutoRegistration.csproj", "{4BD7688D-BDB6-47EE-9F0B-D61B57C10663}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Contracts", "Tests.Contracts\Tests.Contracts.csproj", "{1E0DAB47-3D5D-4B8A-AAE3-D354AAC3170F}"
 EndProject
@@ -53,10 +53,6 @@ Global
 		{3E1922B1-E8ED-4A37-B8D7-73D104645A22} = {1566A6DE-43CA-4953-896E-D9B55F989378}
 		{75BFCBEE-D64C-421B-9B89-CD65065A0D16} = {1566A6DE-43CA-4953-896E-D9B55F989378}
 		{F70D3362-14AD-44CF-8CCC-3969B24FFB31} = {1566A6DE-43CA-4953-896E-D9B55F989378}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {796D3DA9-4817-499E-99C8-039D41B89969}
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = UnityAutoRegistration.vsmdi

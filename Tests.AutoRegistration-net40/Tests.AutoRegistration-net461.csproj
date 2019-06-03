@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tests.Contracts\Tests.Contracts.csproj" />
-    <ProjectReference Include="..\Unity.AutoRegistration\Unity.AutoRegistration.csproj" Properties="TargetFramework=net461" />
+    <ProjectReference Include="..\Microsoft.Extensions.DependencyInjection.AutoRegistration\Microsoft.Extensions.DependencyInjection.AutoRegistration.csproj" Properties="TargetFramework=net461" />
   </ItemGroup>
 
 </Project>

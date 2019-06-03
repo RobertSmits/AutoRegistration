@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tests.Contracts\Tests.Contracts.csproj" />
-    <ProjectReference Include="..\Unity.AutoRegistration\Unity.AutoRegistration.csproj" />
+    <ProjectReference Include="..\Microsoft.Extensions.DependencyInjection.AutoRegistration\Microsoft.Extensions.DependencyInjection.AutoRegistration.csproj" />
   </ItemGroup>
 
 </Project>
